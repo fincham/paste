@@ -1,0 +1,4 @@
+paste/static/highlight.css linguist-vendored
+paste/static/highlight.js linguist-vendored
+paste/static/jquery.js linguist-vendored
+paste/static/sjcl.js linguist-vendored
