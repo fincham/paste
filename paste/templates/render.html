@@ -1,6 +1,9 @@
 <!DOCTYPE html5>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
     <link href="{{ url_for('static', filename='highlight.css') }}" rel=
     "stylesheet">
     <title></title>
@@ -11,7 +14,7 @@
     <script src="{{ url_for('static', filename='sjcl.js') }}">
     </script> 
     <script src="{{ url_for('static', filename='jquery.js') }}">
-    </script> <img id="image_img"><br>
+    </script>
     <pre><code id="ciphertext">{{ ciphertext }}</code></pre>
     <script>
         var plaintext = '';
@@ -33,14 +36,8 @@
             // work out what the plain text should be
             if (plaintext == '') { 
                 if (window.location.hash.length > 3) {
-                    var mime = sjcl.json.decode($('#ciphertext').html()).mime;
                     plaintext = sjcl.decrypt(sjcl.codec.base64.toBits(key), $('#ciphertext').html());
-                    if (mime && mime.startsWith('image/')) { 
-                        ciphertext.style = 'display: none;';
-                        document.getElementById('image_img').src = plaintext;
-                    } else {
-                        $('#ciphertext').text(plaintext);
-                    }
+                    $('#ciphertext').text(plaintext);
                 } else {
                     plaintext = $('#ciphertext').html();
                 }
