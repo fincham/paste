@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="HandheldFriendly" content="true">
     <link href="{{ url_for('static', filename='author.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='sjcl.js') }}"></script> 
     <title>Paste</title>
 </head>
 <body onload="document.f.text.focus()">
-    <button disabled id="encrypt-top" class="btn-style" onclick="encrypt();">Paste</button>
+    <button disabled id="encrypt-top" onclick="encrypt();">Paste</button> 
     <textarea id="plaintext"></textarea>
-    <button disabled id="encrypt-bottom" class="btn-style" onclick="encrypt();">Paste</button>
+    <button disabled id="encrypt-bottom" onclick="encrypt();">Paste</button>
     <span style="font-size: 0.88em;">
         <span>
             with syntax highlighting

@@ -1,7 +1,6 @@
 textarea {
     width: 100%;
     height: 50%;
-    border: 2px solid #cccccc;
 }
 
 body {
@@ -33,8 +32,4 @@ a:active {
 
 .nobr {
     white-space: nowrap;
-}
-
-.btn-style{
-            border : solid 1px #e6e6e6;
 }
