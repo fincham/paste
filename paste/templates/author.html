@@ -1,67 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
     <link href="{{ url_for('static', filename='author.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='sjcl.js') }}"></script> 
     <title>Paste</title>
 </head>
 <body onload="document.f.text.focus()">
-    <button disabled id="encrypt-top" onclick="encrypt();">Paste</button> 
+    <button disabled id="encrypt-top" class="btn-style" onclick="encrypt();">Paste</button>
     <textarea id="plaintext"></textarea>
-    <canvas id="image_canvas" style="display: none;"></canvas>
-    <button disabled id="encrypt-bottom" onclick="encrypt();">Paste</button>
+    <button disabled id="encrypt-bottom" class="btn-style" onclick="encrypt();">Paste</button>
     <span style="font-size: 0.88em;">
-        <span id="text_only_options">
+        <span>
             with syntax highlighting
             <input checked id="highlight" name="syntax" type="radio" value="on">
             <label for="highlight">enabled</label>
             <input id="no-highlighting" name="syntax" type="radio" value="off"> 
             <label for="no-highlighting">disabled</label>
-            or upload
         </span>
-        an image
-        <input id="image_loader" name="image_loader" type="file"> (experimental)
     </span>
     <form accept-charset="UTF-8" id="form" method="post" name="f" style="display: inline;">
         <input id="ciphertext" name="text" type="hidden">
     </form>
     <script>
-            var text_only_options = document.getElementById('text_only_options');
             var plaintext = document.getElementById('plaintext');
             var ciphertext = document.getElementById('ciphertext');
-            var loader = document.getElementById('image_loader');
-            loader.addEventListener('change', load_image, false);
             
-            var canvas = document.getElementById('image_canvas');
-            var context = canvas.getContext('2d');
-
             var mime = 'text/plain';
-
-            function load_image(e) {
-                var reader = new FileReader();
-                reader.onload = function(event){
-                    if (event.target.result.length > 1048576 * 10) {
-                        console.log('Image too large!');
-                        return;
-                    }
-                    
-                    var image = new Image();
-                    image.onload = function(){
-                        canvas.width = image.width;
-                        canvas.height = image.height;
-                        context.drawImage(image,0,0);
-                    }
-                    image.src = event.target.result;
-                    plaintext.value = event.target.result;
-                }
-                mime = e.target.files[0].type;
-                if (mime.startsWith('image/')) {
-                    plaintext.style = 'display: none;';
-                    text_only_options.style = 'display: none;';
-                    canvas.style = 'display: block;';
-                    reader.readAsDataURL(e.target.files[0]);     
-                }
-            }
 
             function encrypt() {
                 var key = sjcl.random.randomWords({{ key_length/4 }});
