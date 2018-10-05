@@ -1,0 +1,56 @@
+@keyframes lds-ball {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(0.45, 0, 0.9, 0.55);
+  }
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  50% {
+    -webkit-transform: translate(0, 108px);
+    transform: translate(0, 108px);
+    animation-timing-function: cubic-bezier(0, 0.45, 0.55, 0.9);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+@-webkit-keyframes lds-ball {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(0.45, 0, 0.9, 0.55);
+  }
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  50% {
+    -webkit-transform: translate(0, 108px);
+    transform: translate(0, 108px);
+    animation-timing-function: cubic-bezier(0, 0.45, 0.55, 0.9);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+.lds-ball {
+  position: relative;
+}
+.lds-ball div {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  left: 74px;
+  top: 20px;
+  -webkit-animation: lds-ball 1s linear infinite;
+  animation: lds-ball 1s linear infinite;
+}
+.lds-ball {
+  width: 98px !important;
+  height: 98px !important;
+  -webkit-transform: translate(-49px, -49px) scale(0.49) translate(49px, 49px);
+  transform: translate(-49px, -49px) scale(0.49) translate(49px, 49px);
+}

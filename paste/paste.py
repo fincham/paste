@@ -72,7 +72,7 @@ def render(paste):
     try:
         with open("%s/%s" % (os.environ.get('PASTE_PATH', 'paste'), paste)) as p:
             ciphertext = p.read()
-        return render_template('render.html', ciphertext=ciphertext)
+        return render_template('render.html', ciphertext=ciphertext, ciphertext_length=len(ciphertext))
     except FileNotFoundError:
         abort(404)
     except:
