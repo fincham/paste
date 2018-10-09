@@ -1,6 +1,7 @@
 (function(){
 
 var plaintext = '';
+var mime;
 
 function scale_image(image) {
     var scale = Math.min(1, $(window).width() / (image.prop('naturalWidth') + 50).toFixed(2));
@@ -29,7 +30,6 @@ function scale_image(image) {
 function decrypt() {
     var highlighting;
     var key;
-    var mime;
    
     var ciphertext = $('code');
     window.ciphertext = ciphertext;
