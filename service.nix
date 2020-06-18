@@ -6,36 +6,38 @@ in {
   options.services.paste = {
     enable = lib.mkEnableOption "paste";
 
-    port = mkOption {
-      type = types.int;
+    port = lib.mkOption {
+      type = lib.types.int;
       default = 8080;
       description = "The localhost TCP port on which the service will listen";
     };
 
-    pasteIdLength = mkOption {
-      type = types.int;
+    pasteIdLength = lib.mkOption {
+      type = lib.types.int;
       default = 16;
       description = "Number of characters used for paste IDs";
     };
 
-    pasteKeyLength = mkOption {
-      type = types.int;
+    pasteKeyLength = lib.mkOption {
+      type = lib.types.int;
       default = 32;
       description = "Number of octets in the paste encryption key";
     };
 
-    pastePath = mkOption {
-      type = types.str;
+    pastePath = lib.mkOption {
+      type = lib.types.str;
       default = "/srv/www/paste";
-      description = "Location in the filesystem where pastes will be stored"
+      description = "Location in the filesystem where pastes will be stored";
     };
 
-    user = mkOption {
+    user = lib.mkOption {
+      type = lib.types.str;
       default = "paste";
       description = "UID which paste will be run as";
     };
 
-    group = mkOption {
+    group = lib.mkOption {
+      type = lib.types.str;
       default = "paste";
       description = "GID which paste will be run as";
     };
@@ -56,8 +58,8 @@ in {
       description = "Encrypted pastebin server";
       unitConfig.Documentation = "https://github.com/fincham/paste";
       serviceConfig = {
-        ExecStart = "${appEnv}/bin/waitress-serve --listen=127.0.0.1:${cfg.port} paste:app";
-        Environment = "PASTE_PATH=${cfg.pastePath},PASTE_ID_LENGTH=${cfg.pasteIdLength},PASTE_KEY_LENGTH=${cfg.pasteKeyLength}";
+        ExecStart = "${appEnv}/bin/waitress-serve --listen=127.0.0.1:${toString cfg.port} paste:app";
+        Environment = "PASTE_PATH=${cfg.pastePath},PASTE_ID_LENGTH=${toString cfg.pasteIdLength},PASTE_KEY_LENGTH=${toString cfg.pasteKeyLength}";
 	User = "${cfg.user}";
 	Group = "${cfg.group}";
       };
