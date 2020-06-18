@@ -33,7 +33,7 @@ Here's an example `httpd` config for NixOS:
             adminAddr = "michael@example.com";
             extraModules = ["proxy_http"];
             virtualHosts = {
-                "paste.hotplate.co.nz" = {
+                "paste.example.com" = {
                     enableACME = true;
                     forceSSL = true;
                     documentRoot = "/srv/www/empty";
