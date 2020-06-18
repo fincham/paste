@@ -25,12 +25,12 @@ Here's an example `httpd` config for NixOS:
     services.paste.pasteKeyLength = 16;
 
     security.acme.acceptTerms = true;
-    security.acme.email = "michael@hotplate.co.nz";
+    security.acme.email = "michael@example.com";
 
     services = {
         httpd = {
             enable = true;
-            adminAddr = "michael@hotplate.co.nz";
+            adminAddr = "michael@example.com";
             extraModules = ["proxy_http"];
             virtualHosts = {
                 "paste.hotplate.co.nz" = {
