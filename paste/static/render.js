@@ -3,8 +3,14 @@
 var plaintext = '';
 var mime;
 
+if (!Array.prototype.last){
+    Array.prototype.last = function(){
+        return this[this.length - 1];
+    };
+};
+
 function scale_image(image) {
-    var scale = Math.min(1, $(window).width() / (image.prop('naturalWidth') + 50).toFixed(2));
+    var scale = Math.min(1, Math.min($(window).width() / (image.prop('naturalWidth') + 50).toFixed(2), $(window).height() / (image.prop('naturalHeight') + 50).toFixed(2)));
     image.off('click');
     if (scale < 1) {
         image.css('transform', 'scale(' + scale + ')');
@@ -30,6 +36,7 @@ function scale_image(image) {
 function decrypt() {
     var highlighting;
     var key;
+    var syntax = '';
    
     var ciphertext = $('code');
     window.ciphertext = ciphertext;
@@ -40,6 +47,13 @@ function decrypt() {
     if (decodeURIComponent(window.location.hash).indexOf('$') != -1) {
         key = decodeURIComponent(window.location.hash).split('$')[0].slice(1);
         highlighting = decodeURIComponent(window.location.hash).split('$')[1];
+        syntax = decodeURIComponent(window.location.hash).split('$').last();
+	if (syntax == '0' || syntax == '1') {
+	  syntax = '';
+        }
+        if (highlighting != '0' && highlighting != '1') {
+          highlighting = '1';
+        }
     } else {
         key = decodeURIComponent(window.location.hash).slice(1);
         highlighting = '1';
@@ -53,7 +67,7 @@ function decrypt() {
     }
 
     // check supposed mime type to see if it's an image or something else
-    if (mime.startsWith('image/')) {
+    if (mime.startsWith('image/') || mime.startsWith('video/')) {
         if (!image.attr('src')) {
             image.on('load', function() {
                 scale_image(image);
@@ -64,8 +78,13 @@ function decrypt() {
     } else {
         ciphertext.text(plaintext);
         if (highlighting == '1') {
+            if (syntax != "") {
+	      ciphertext.attr('class', syntax);
+            }
             hljs.highlightBlock(ciphertext[0]);
-        }
+         } else {
+	    ciphertext.attr('class', 'plaintext');
+         }
         $('pre').css('display', 'block');
     }
 

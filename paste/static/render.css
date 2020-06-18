@@ -3,13 +3,19 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #0e0e0e;
-    color: white;
+    background-color: #2d2d2d;
+    color: #cccccc;
+}
+
+code {
+    font-family: monospace;
+    max-width: 100%;
 }
 
 pre {
     padding: 10px;
     display: none;
+    white-space: pre-wrap;
 }
 
 img {

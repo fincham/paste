@@ -5,14 +5,192 @@
     <script src="{{ url_for('static', filename='sjcl.js') }}"></script> 
     <title>Paste</title>
 </head>
-<body onload="document.f.text.focus()">
-    <button disabled id="encrypt-top" onclick="encrypt();">Paste</button> 
-    <textarea id="plaintext"></textarea>
+<body>
+    <div class="top">
+<button id="encrypt-top" onClick="encrypt();" disabled>Paste</button>&nbsp;Submissions are encrypted with the random key in the paste URL and will be removed after 30 days.</div></div>
+    <textarea autofocus id="plaintext"></textarea>
     <canvas id="image_canvas" style="display: none;"></canvas>
-    <button disabled id="encrypt-bottom" onclick="encrypt();">Paste</button>
-    <span style="font-size: 0.88em;">
+    <div class="bottom">
+        <button disabled id="encrypt-bottom" onclick="encrypt();">Paste</button>
         <span id="text_only_options">
-            with syntax highlighting
+         with <select id="syntax" name="syntax">
+         <option value="">automatic</option>
+         <option value="" disabled>--------</option>
+            <option value="1c">1C:Enterprise (v7, v8)</option>
+<option value="abnf">Augmented Backus-Naur Form</option>
+<option value="actionscript">ActionScript</option>
+<option value="ada">Ada</option>
+<option value="angelscript">AngelScript</option>
+<option value="apache">Apache</option>
+<option value="applescript">AppleScript</option>
+<option value="arduino">Arduino</option>
+<option value="armasm">ARM Assembly</option>
+<option value="asciidoc">AsciiDoc</option>
+<option value="aspectj">AspectJ</option>
+<option value="autohotkey">AutoHotkey</option>
+<option value="autoit">AutoIt</option>
+<option value="avrasm">AVR Assembler</option>
+<option value="awk">Awk</option>
+<option value="axapta">Axapta</option>
+<option value="bash">Bash</option>
+<option value="basic">Basic</option>
+<option value="bnf">Backus–Naur Form</option>
+<option value="brainfuck">Brainfuck</option>
+<option value="cal">C/AL</option>
+<option value="capnproto">Cap’n Proto</option>
+<option value="ceylon">Ceylon</option>
+<option value="clean">Clean</option>
+<option value="clojure">Clojure</option>
+<option value="clojure-repl">Clojure REPL</option>
+<option value="cmake">CMake</option>
+<option value="coffeescript">CoffeeScript</option>
+<option value="coq">Coq</option>
+<option value="cos">Caché Object Script</option>
+<option value="cpp">C++</option>
+<option value="crmsh">crmsh</option>
+<option value="crystal">Crystal</option>
+<option value="cs">C#</option>
+<option value="csp">CSP</option>
+<option value="css">CSS</option>
+<option value="dart">Dart</option>
+<option value="delphi">Delphi</option>
+<option value="diff">Diff</option>
+<option value="django">Django</option>
+<option value="d">D</option>
+<option value="dns">DNS Zone file</option>
+<option value="dockerfile">Dockerfile</option>
+<option value="dos">DOS .bat</option>
+<option value="dts">Device Tree</option>
+<option value="dust">Dust</option>
+<option value="ebnf">Extended Backus-Naur Form</option>
+<option value="elixir">Elixir</option>
+<option value="elm">Elm</option>
+<option value="erb">ERB (Embedded Ruby)</option>
+<option value="erlang">Erlang</option>
+<option value="excel">Excel</option>
+<option value="fix">FIX</option>
+<option value="fortran">Fortran</option>
+<option value="fsharp">F#</option>
+<option value="gauss">GAUSS</option>
+<option value="glsl">GLSL</option>
+<option value="gml">GML</option>
+<option value="go">Go</option>
+<option value="golo">Golo</option>
+<option value="gradle">Gradle</option>
+<option value="haml">Haml</option>
+<option value="handlebars">Handlebars</option>
+<option value="haskell">Haskell</option>
+<option value="haxe">Haxe</option>
+<option value="hsp">HSP</option>
+<option value="htmlbars">HTMLBars</option>
+<option value="http">HTTP</option>
+<option value="hy">Hy</option>
+<option value="inform7">Inform 7</option>
+<option value="ini">Ini, TOML</option>
+<option value="irpf90">IRPF90</option>
+<option value="isbl">ISBL</option>
+<option value="java">Java</option>
+<option value="javascript">JavaScript</option>
+<option value="json">JSON</option>
+<option value="julia">Julia</option>
+<option value="julia-repl">Julia REPL</option>
+<option value="lasso">Lasso</option>
+<option value="ldif">LDIF</option>
+<option value="leaf">Leaf</option>
+<option value="less">Less</option>
+<option value="lisp">Lisp</option>
+<option value="livecodeserver">LiveCode</option>
+<option value="livescript">LiveScript</option>
+<option value="llvm">LLVM IR</option>
+<option value="lsl">Linden Scripting Language</option>
+<option value="lua">Lua</option>
+<option value="makefile">Makefile</option>
+<option value="markdown">Markdown</option>
+<option value="mathematica">Mathematica</option>
+<option value="matlab">Matlab</option>
+<option value="maxima">Maxima</option>
+<option value="mel">MEL</option>
+<option value="mercury">Mercury</option>
+<option value="mipsasm">MIPS Assembly</option>
+<option value="mizar">Mizar</option>
+<option value="mojolicious">Mojolicious</option>
+<option value="monkey">Monkey</option>
+<option value="moonscript">MoonScript</option>
+<option value="nginx">Nginx</option>
+<option value="nimrod">Nimrod</option>
+<option value="nix">Nix</option>
+<option value="nsis">NSIS</option>
+<option value="objectivec">Objective-C</option>
+<option value="ocaml">OCaml</option>
+<option value="openscad">OpenSCAD</option>
+<option value="oxygene">Oxygene</option>
+<option value="parser3">Parser3</option>
+<option value="perl">Perl</option>
+<option value="pf">pf</option>
+<option value="pgsql">PostgreSQL SQL dialect and PL/pgSQL</option>
+<option value="php">PHP</option>
+<option value="plaintext">plaintext</option>
+<option value="pony">Pony</option>
+<option value="powershell">PowerShell</option>
+<option value="processing">Processing</option>
+<option value="profile">Python profile</option>
+<option value="prolog">Prolog</option>
+<option value="properties">Properties</option>
+<option value="protobuf">Protocol Buffers</option>
+<option value="puppet">Puppet</option>
+<option value="purebasic">PureBASIC</option>
+<option value="python">Python</option>
+<option value="q">Q</option>
+<option value="qml">QML</option>
+<option value="reasonml">ReasonML</option>
+<option value="rib">RenderMan RIB</option>
+<option value="r">R</option>
+<option value="roboconf">Roboconf</option>
+<option value="routeros">Microtik RouterOS script</option>
+<option value="rsl">RenderMan RSL</option>
+<option value="ruby">Ruby</option>
+<option value="ruleslanguage">Oracle Rules Language</option>
+<option value="rust">Rust</option>
+<option value="sas">SAS</option>
+<option value="scala">Scala</option>
+<option value="scheme">Scheme</option>
+<option value="scilab">Scilab</option>
+<option value="scss">SCSS</option>
+<option value="shell">Shell Session</option>
+<option value="smali">Smali</option>
+<option value="smalltalk">Smalltalk</option>
+<option value="sml">SML</option>
+<option value="sqf">SQF</option>
+<option value="stan">Stan</option>
+<option value="stata">Stata</option>
+<option value="step21">STEP Part 21</option>
+<option value="stylus">Stylus</option>
+<option value="subunit">SubUnit</option>
+<option value="swift">Swift</option>
+<option value="taggerscript">Tagger Script</option>
+<option value="tap">Test Anything Protocol</option>
+<option value="tcl">Tcl</option>
+<option value="tex">TeX</option>
+<option value="thrift">Thrift</option>
+<option value="tp">TP</option>
+<option value="twig">Twig</option>
+<option value="typescript">TypeScript</option>
+<option value="vala">Vala</option>
+<option value="vbnet">VB.NET</option>
+<option value="vbscript-html">VBScript in HTML</option>
+<option value="vbscript">VBScript</option>
+<option value="verilog">Verilog</option>
+<option value="vhdl">VHDL</option>
+<option value="vim">Vim Script</option>
+<option value="x86asm">Intel x86 Assembly</option>
+<option value="xl">XL</option>
+<option value="xml">HTML, XML</option>
+<option value="xquery">XQuery</option>
+<option value="yaml">YAML</option>
+</select>
+            
+            
+            syntax highlighting
             <input checked id="highlight" name="syntax" type="radio" value="on">
             <label for="highlight">enabled</label>
             <input id="no-highlighting" name="syntax" type="radio" value="off"> 
@@ -20,12 +198,14 @@
             or upload
         </span>
         an image
-        <input id="image_loader" name="image_loader" type="file"> (experimental)
-    </span>
-    <form accept-charset="UTF-8" id="form" method="post" name="f" style="display: inline;">
-        <input id="ciphertext" name="text" type="hidden">
-    </form>
+        <input id="image_loader" name="image_loader" type="file">
+        <form accept-charset="UTF-8" id="form" method="post" name="f" style="display: inline;">
+            <input id="ciphertext" name="text" type="hidden">
+        </form>
+    </div>
     <script>
+            var canvas_height = 0;
+            var canvas_width = 0;
             var text_only_options = document.getElementById('text_only_options');
             var plaintext = document.getElementById('plaintext');
             var ciphertext = document.getElementById('ciphertext');
@@ -47,19 +227,23 @@
                     
                     var image = new Image();
                     image.onload = function(){
-                        canvas.width = image.width;
-                        canvas.height = image.height;
-                        context.drawImage(image,0,0);
+                        var scale = Math.min(1, Math.min(canvas_width / image.width, canvas_height / image.height));
+                        context.drawImage(image, Math.max(0, canvas_width / 2 - image.width * scale / 2), Math.max(0, canvas_height / 2 - image.height * scale / 2), image.width * scale, image.height * scale);
                     }
                     image.src = event.target.result;
                     plaintext.value = event.target.result;
                 }
                 mime = e.target.files[0].type;
-                if (mime.startsWith('image/')) {
+                if (mime.startsWith('image/') || mime.startsWith('video/')) {
+                    canvas.width = canvas_width;
+                    canvas.height = canvas_height;
                     plaintext.style = 'display: none;';
                     text_only_options.style = 'display: none;';
                     canvas.style = 'display: block;';
                     reader.readAsDataURL(e.target.files[0]);     
+                } else {
+                    loader.value = '';
+                    text_only_options.style = 'display: inline;';
                 }
             }
 
@@ -73,7 +257,25 @@
                 if (!document.getElementById('highlight').checked) {
                     window.location.hash += '$0';
                 }
+
+		if (document.getElementById('syntax').value != '') {
+		    window.location.hash += '$' + document.getElementById('syntax').value;
+                }
                 document.getElementById('form').submit();
+            }
+
+            document.onpaste = function (event) {
+                var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+                var blob = null;
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf("image/") === 0) {
+                        blob = items[i].getAsFile();
+                    }
+                }
+                if (blob !== null) {
+                        var e = {'target': {'files': [blob]}};
+                        load_image(e);
+                }
             }
 
             var seeded = function () {
@@ -88,6 +290,13 @@
                 sjcl.random.addEventListener('seeded', seeded);
                 sjcl.random.startCollectors();
             }
+
+            plaintext.style.height = (window.innerHeight - 120) + 'px';
+            plaintext.value = '';
+            loader.value = '';
+            canvas_width = plaintext.offsetWidth;
+            canvas_height = plaintext.offsetHeight;
+            history.pushState("", document.title, window.location.pathname + window.location.search);            
     </script>
 </body>
 </html>
