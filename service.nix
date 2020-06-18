@@ -57,11 +57,18 @@ in {
       wantedBy = [ "multi-user.target" ];
       description = "Encrypted pastebin server";
       unitConfig.Documentation = "https://github.com/fincham/paste";
+      environment = {
+        PASTE_PATH = "${cfg.pastePath}";
+        PASTE_ID_LENGTH = "${toString cfg.pasteIdLength}";
+        PASTE_KEY_LENGTH = "${toString cfg.pasteKeyLength}";
+      };
       serviceConfig = {
         ExecStart = "${appEnv}/bin/waitress-serve --listen=127.0.0.1:${toString cfg.port} paste:app";
-        Environment = "PASTE_PATH=${cfg.pastePath},PASTE_ID_LENGTH=${toString cfg.pasteIdLength},PASTE_KEY_LENGTH=${toString cfg.pasteKeyLength}";
 	User = "${cfg.user}";
 	Group = "${cfg.group}";
+        StandardOutput = "syslog";
+        StandardError = "syslog";
+        SyslogIdentifier= "paste";
       };
     };
   };
