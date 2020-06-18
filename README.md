@@ -14,6 +14,7 @@ be shortened below 16.
 # Running on NixOS
 
 Here's an example `httpd` config for NixOS:
+
     imports = [
         ./service.nix
     ];
