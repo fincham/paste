@@ -10,3 +10,39 @@ Expects these environment variables to be set:
 
 For most applications PASTE_ID_LENGTH and PASTE_KEY_LENGTH could be shortened, though PASTE_KEY_LENGTH cannot
 be shortened below 16.
+
+# Running on NixOS
+
+Here's an example `httpd` config for NixOS:
+    imports = [
+        ./service.nix
+    ];
+
+    services.paste.enable = true;	
+    services.paste.port = 4000;	
+    services.paste.pasteIdLength = 10;
+    services.paste.pasteKeyLength = 16;
+
+    security.acme.acceptTerms = true;
+    security.acme.email = "michael@hotplate.co.nz";
+
+    services = {
+        httpd = {
+            enable = true;
+            adminAddr = "michael@hotplate.co.nz";
+            extraModules = ["proxy_http"];
+            virtualHosts = {
+                "paste.hotplate.co.nz" = {
+                    enableACME = true;
+                    forceSSL = true;
+                    documentRoot = "/srv/www/empty";
+                    extraConfig = ''
+                        ProxyPass /.well-known/acme-challenge/ !
+                        ProxyPass / http://localhost:${toString config.services.paste.port}/
+                        ProxyPassReverse / http://localhost:${toString config.services.paste.port}/
+                    '';
+                };
+            };
+        };
+    };
+
