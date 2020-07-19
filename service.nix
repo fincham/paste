@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, pkgs, config, ... }:
 let
   cfg = config.services.paste;
   appEnv = pkgs.python3.withPackages (p: with p; [ waitress (callPackage ./default.nix {}) ]);
