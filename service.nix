@@ -2,6 +2,16 @@
 let
   cfg = config.services.paste;
   appEnv = pkgs.python3.withPackages (p: with p; [ waitress (callPackage ./default.nix {}) ]);
+  
+  apparmor_profile = writeText "paste.apparmor" ''
+      #include <tunables/global>
+      
+      ${appEnv}/bin/waitress-serve {
+          #include <abstractions/base>
+          ${appEnv}/bin/waitress-serve r,
+      }
+  '';
+
 in {
   options.services.paste = {
     enable = lib.mkEnableOption "paste";
