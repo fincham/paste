@@ -3,7 +3,7 @@ let
   cfg = config.services.paste;
   appEnv = pkgs.python3.withPackages (p: with p; [ waitress (callPackage ./default.nix {}) ]);
   
-  apparmor_profile = writeText "paste.apparmor" ''
+  apparmor_profile = pkgs.writeText "paste.apparmor" ''
       #include <tunables/global>
       
       ${appEnv}/bin/waitress-serve {
