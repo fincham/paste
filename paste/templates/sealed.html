@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+    <link href="{{ url_for('static', filename='author.css') }}" rel="stylesheet">
+    <style>
+    body, html {
+  position: relative;
+}
+
+.dialog {
+  width: 300px;
+  height: 130px;
+  padding: 20px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  margin: -70px 0 0 -170px;
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  color: black;
+}
+</style>
+</head>
+<body>
+<div class="dialog">
+<p>This is a sealed paste. You will only have one opportunity to unseal and view it. After this it will be removed from the paste server.</p>
+<form method="POST"><input type="submit" value="Unseal it"></form>
+<img src="/static/fire.gif" style="position: relative; left: -25px; opacity: 0.8">
+</div>
+</body>
+</html>

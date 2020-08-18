@@ -7,14 +7,15 @@
 </head>
 <body>
     <div class="top">
-<button id="encrypt-top" onClick="encrypt();" disabled>Paste</button>&nbsp;Submissions are encrypted with the random key in the paste URL and will be removed after 30 days.</div></div>
+<button id="encrypt-top" onClick="encrypt(seal=false);" disabled>Paste</button>&nbsp;<button id="seal-top" onClick="encrypt(seal=true);" disabled>Seal</button>&nbsp;&nbsp;Submissions are encrypted with the random key in the paste URL and will be removed after 30 days.</div></div>
     <textarea autofocus id="plaintext"></textarea>
     <canvas id="image_canvas" style="display: none;"></canvas>
     <div class="bottom">
-        <button disabled id="encrypt-bottom" onclick="encrypt();">Paste</button>
+        <button disabled id="encrypt-bottom" onclick="encrypt();">Paste</button>&nbsp;<button id="seal-bottom" onClick="encrypt(seal=true);" disabled>Seal</button>
         <span id="text_only_options">
          with <select id="syntax" name="syntax">
          <option value="">automatic</option>
+         <option value="none">disabled</option>
          <option value="" disabled>--------</option>
             <option value="1c">1C:Enterprise (v7, v8)</option>
 <option value="abnf">Augmented Backus-Naur Form</option>
@@ -188,18 +189,12 @@
 <option value="xquery">XQuery</option>
 <option value="yaml">YAML</option>
 </select>
-            
-            
-            syntax highlighting
-            <input checked id="highlight" name="syntax" type="radio" value="on">
-            <label for="highlight">enabled</label>
-            <input id="no-highlighting" name="syntax" type="radio" value="off"> 
-            <label for="no-highlighting">disabled</label>
-            or upload
+         highlighting, or upload
         </span>
         an image
         <input id="image_loader" name="image_loader" type="file">
         <form accept-charset="UTF-8" id="form" method="post" name="f" style="display: inline;">
+            <input id="sealed" name="sealed" type="hidden" value="false">
             <input id="ciphertext" name="text" type="hidden">
         </form>
     </div>
@@ -209,6 +204,7 @@
             var text_only_options = document.getElementById('text_only_options');
             var plaintext = document.getElementById('plaintext');
             var ciphertext = document.getElementById('ciphertext');
+            var to_be_sealed = document.getElementById('sealed');
             var loader = document.getElementById('image_loader');
             loader.addEventListener('change', load_image, false);
             
@@ -247,18 +243,20 @@
                 }
             }
 
-            function encrypt() {
+            function encrypt(sealed) {
                 var key = sjcl.random.randomWords({{ key_length/4 }});
                 var encrypted = sjcl.json.decode(sjcl.encrypt(key, plaintext.value));
                 encrypted.mime = mime;
                 ciphertext.value = sjcl.json.encode(encrypted);
 
-                window.location.hash = sjcl.codec.base64.fromBits(key, true);
-                if (!document.getElementById('highlight').checked) {
-                    window.location.hash += '$0';
+                if (sealed == true) {
+                    to_be_sealed.value = 'true';
                 }
 
-		if (document.getElementById('syntax').value != '') {
+                window.location.hash = sjcl.codec.base64.fromBits(key, true);
+                if (document.getElementById('syntax').value == 'none') {
+                    window.location.hash += '$0';
+                } else if (document.getElementById('syntax').value != '') {
 		    window.location.hash += '$' + document.getElementById('syntax').value;
                 }
                 document.getElementById('form').submit();
@@ -282,6 +280,8 @@
                 sjcl.random.removeEventListener('seeded', seeded);
                 document.getElementById('encrypt-top').disabled = false;
                 document.getElementById('encrypt-bottom').disabled = false;
+                document.getElementById('seal-top').disabled = false;
+                document.getElementById('seal-bottom').disabled = false;
             }
 
             if (sjcl.random.isReady()) {
@@ -291,7 +291,7 @@
                 sjcl.random.startCollectors();
             }
 
-            plaintext.style.height = (window.innerHeight - 120) + 'px';
+            plaintext.style.height = (window.innerHeight - 130) + 'px';
             plaintext.value = '';
             loader.value = '';
             canvas_width = plaintext.offsetWidth;

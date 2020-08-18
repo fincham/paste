@@ -13,6 +13,7 @@ code {
 }
 
 pre {
+    margin: 0px;
     padding: 10px;
     display: none;
     white-space: pre-wrap;

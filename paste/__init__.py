@@ -65,6 +65,8 @@ def author():
             while p == None:
                 try:
                     paste = generate_paste_id()
+                    if request.form.get("sealed", "false") == "true":
+                        paste = "sealed/%s" % paste
                     p = open(
                         "%s/%s" % (os.environ.get("PASTE_PATH", "paste"), paste), "x"
                     )
@@ -105,6 +107,35 @@ def render(paste):
         return render_template(
             "render.html", ciphertext=ciphertext, ciphertext_length=len(ciphertext)
         )
+    except FileNotFoundError:
+        abort(404)
+    except:
+        abort(500)
+
+
+@app.route("/sealed/<paste>", methods=["GET", "POST"])
+def unseal(paste):
+    """
+    Return the encrypted text of a paste along with the Javascript that decrypts it, then deletes the paste.
+    """
+
+    paste = paste_whitelist.sub(
+        "", paste
+    )  # remove all but alphanumeric characters from the paste ID
+    try:
+        with open("%s/sealed/%s" % (os.environ.get("PASTE_PATH", "paste"), paste)) as p:
+            if request.method == "POST":
+                os.unlink(
+                    "%s/sealed/%s" % (os.environ.get("PASTE_PATH", "paste"), paste)
+                )
+                ciphertext = p.read()
+                return render_template(
+                    "render.html",
+                    ciphertext=ciphertext,
+                    ciphertext_length=len(ciphertext),
+                )
+            elif request.method == "GET":
+                return render_template("sealed.html")
     except FileNotFoundError:
         abort(404)
     except:
