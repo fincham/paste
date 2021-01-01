@@ -1,24 +1,45 @@
 body {
     font-family: sans-serif;
-    padding: 20px;
-    margin: 0;
-    height: 90%;
-    background-color: #333;
+    background-color: #2d2d2d;
 	color: #cccccc;
- /* background-image: url(giphy.webp);
-  background-repeat: no-repeat;
-  background-size: cover; */
+    display: flex;
+    flex-direction: column;	
 }
 
-html {
-    margin: 0;
-    padding: 0;
+html, body {
     height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.top img {
+    float: right;
+    height: 32px;
+}
+
+.top, .bottom {
+    font-size: 0.88em
+    min-height: 32px;
+    line-height: 32px
+}
+
+.top {
+    margin: 20px 20px 0px 20px;
+}
+
+.bottom {
+    margin: 0px 20px 20px 20px;
+}
+
+.main {
+    flex: auto;
+    padding: 20px 20px 25px 20px;
 }
 
 textarea {
     width: 100%;
-    height: 50%;
+    height: 100%;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.05, #333));
     background: -moz-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.05, #333));
     background: -o-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.05, #333));
@@ -32,10 +53,6 @@ textarea {
     -webkit-box-shadow: 1px 1px 1px #333;
     -moz-box-shadow: 1px 1px 1px #333;
     box-shadow: 1px 1px 1px #333;
-}
-
-canvas {
-    margin-bottom: 7px;
 }
 
 input[type=radio] {
@@ -62,14 +79,4 @@ a:active {
 
 .nobr {
     white-space: nowrap;
-}
-
-.bottom {
-    margin-top: 15px;
-    font-size: 0.88em
-}
-
-.top {
-    margin-bottom: 7px;
-    font-size: 0.88em
 }

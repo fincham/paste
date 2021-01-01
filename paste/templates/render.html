@@ -14,11 +14,13 @@
             </div>
         </div>
     {% endif %}
-    <img>
-    <pre><code>{{ ciphertext }}</code></pre>
+    <input type="checkbox" id="zoom">
+    <label for="zoom">
+        <img>
+    </label>
+    <pre><code>{{ ciphertext|safe }}</code></pre>
     <script src="{{ url_for('static', filename='highlight.js') }}"></script> 
     <script src="{{ url_for('static', filename='sjcl.js') }}"></script> 
-    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
     <script src="{{ url_for('static', filename='render.js') }}"></script>
 </body>
 </html>

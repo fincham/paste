@@ -12,17 +12,20 @@ code {
     max-width: 100%;
 }
 
+.fits {
+    cursor: auto !important;    
+}
+
 pre {
-    margin: 0px;
     padding: 10px;
     display: none;
     white-space: pre-wrap;
 }
 
-img {
-    display: none;
-    position: absolute;
-    transform-origin: top left;
+.lds-ball {
+    position: relative;
+    top: calc(50% - 49px);
+    left: calc(50% - 49px);
 }
 
 .loader {
@@ -30,8 +33,39 @@ img {
     width: 100%;
 }
 
-.lds-ball {
-    position: relative; 
-    top: 50%; 
-    left: 50%;
+/* zooming related trickery */
+
+input[type=checkbox] {
+    display: none;
+}
+
+label {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: none;
+}
+
+/* zoomed out */
+input[type=checkbox]:not(:checked)~label {
+    cursor: zoom-in;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type=checkbox]:not(:checked)~label>img {
+    cursor: zoom-in;
+    width: auto;
+    height: auto;
+    max-width: 95%;
+    max-height: 95%;
+}
+
+/* zoomed in */
+input[type=checkbox]:checked~label {
+    cursor: zoom-out;
+}
+
+input[type=checkbox]:checked~label>img {
+    margin: auto;
+    cursor: zoom-out;
 }

@@ -2,21 +2,33 @@
 <html>
 <head>
     <link href="{{ url_for('static', filename='author.css') }}" rel="stylesheet">
-    <script src="{{ url_for('static', filename='sjcl.js') }}"></script> 
     <title>Paste</title>
 </head>
+
 <body>
     <div class="top">
-<button id="encrypt-top" onClick="encrypt(seal=false);" disabled>Paste</button>&nbsp;<button id="seal-top" onClick="encrypt(seal=true);" disabled>Seal</button>&nbsp;&nbsp;Submissions are encrypted with the random key in the paste URL and will be removed after 30 days.</div></div>
-    <textarea autofocus id="plaintext"></textarea>
-    <canvas id="image_canvas" style="display: none;"></canvas>
+        <button disabled id="encrypt-top">Paste</button>
+        &nbsp;<button disabled id="seal-top">Seal</button>
+        &nbsp;Submissions are encrypted with the random key in the paste URL and will be removed after 30 days.
+    </div>
+
+    <div class="main">
+        <!-- text submissions -->
+        <textarea autofocus="" id="plaintext"></textarea>
+    
+        <!-- canvas for drawing image submissions -->
+        <canvas id="image_canvas" style="display: none;">
+        </canvas>
+    </div>
+
     <div class="bottom">
-        <button disabled id="encrypt-bottom" onclick="encrypt();">Paste</button>&nbsp;<button id="seal-bottom" onClick="encrypt(seal=true);" disabled>Seal</button>
+        <button disabled id="encrypt-bottom">Paste</button>
+        &nbsp;<button disabled id="seal-bottom">Seal</button>
         <span id="text_only_options">
-         with <select id="syntax" name="syntax">
-         <option value="">automatic</option>
-         <option value="none">disabled</option>
-         <option value="" disabled>--------</option>
+            with <select id="syntax" name="syntax">
+                <option value="">automatic</option>
+                <option value="none">disabled</option>
+                <option disabled value="">--------</option>
             <option value="1c">1C:Enterprise (v7, v8)</option>
 <option value="abnf">Augmented Backus-Naur Form</option>
 <option value="actionscript">ActionScript</option>
@@ -188,115 +200,21 @@
 <option value="xml">HTML, XML</option>
 <option value="xquery">XQuery</option>
 <option value="yaml">YAML</option>
-</select>
-         highlighting, or upload
-        </span>
-        an image
-        <input id="image_loader" name="image_loader" type="file">
+
+
+            </select>
+        highlighting, or upload</span> an image <input accept=".svg, .gif, .bmp, .jpg, .jpeg, .png, image/svg, image/gif, image/bmp, image/jpeg, image/jpg, image/png" id="image_loader" name="image_loader" type="file">
+
         <form accept-charset="UTF-8" id="form" method="post" name="f" style="display: inline;">
+            <input id="key_length" name="key_length" type="hidden" value="{{ key_length }}">
             <input id="sealed" name="sealed" type="hidden" value="false">
+            <input id="presigned" name="presigned" type="hidden" value="">
             <input id="ciphertext" name="text" type="hidden">
         </form>
     </div>
-    <script>
-            var canvas_height = 0;
-            var canvas_width = 0;
-            var text_only_options = document.getElementById('text_only_options');
-            var plaintext = document.getElementById('plaintext');
-            var ciphertext = document.getElementById('ciphertext');
-            var to_be_sealed = document.getElementById('sealed');
-            var loader = document.getElementById('image_loader');
-            loader.addEventListener('change', load_image, false);
-            
-            var canvas = document.getElementById('image_canvas');
-            var context = canvas.getContext('2d');
-
-            var mime = 'text/plain';
-
-            function load_image(e) {
-                var reader = new FileReader();
-                reader.onload = function(event){
-                    if (event.target.result.length > 1048576 * 10) {
-                        console.log('Image too large!');
-                        return;
-                    }
-                    
-                    var image = new Image();
-                    image.onload = function(){
-                        var scale = Math.min(1, Math.min(canvas_width / image.width, canvas_height / image.height));
-                        context.drawImage(image, Math.max(0, canvas_width / 2 - image.width * scale / 2), Math.max(0, canvas_height / 2 - image.height * scale / 2), image.width * scale, image.height * scale);
-                    }
-                    image.src = event.target.result;
-                    plaintext.value = event.target.result;
-                }
-                mime = e.target.files[0].type;
-                if (mime.startsWith('image/') || mime.startsWith('video/')) {
-                    canvas.width = canvas_width;
-                    canvas.height = canvas_height;
-                    plaintext.style = 'display: none;';
-                    text_only_options.style = 'display: none;';
-                    canvas.style = 'display: block;';
-                    reader.readAsDataURL(e.target.files[0]);     
-                } else {
-                    loader.value = '';
-                    text_only_options.style = 'display: inline;';
-                }
-            }
-
-            function encrypt(sealed) {
-                var key = sjcl.random.randomWords({{ key_length/4 }});
-                var encrypted = sjcl.json.decode(sjcl.encrypt(key, plaintext.value));
-                encrypted.mime = mime;
-                ciphertext.value = sjcl.json.encode(encrypted);
-
-                if (sealed == true) {
-                    to_be_sealed.value = 'true';
-                }
-
-                window.location.hash = sjcl.codec.base64.fromBits(key, true);
-                if (document.getElementById('syntax').value == 'none') {
-                    window.location.hash += '$0';
-                } else if (document.getElementById('syntax').value != '') {
-		    window.location.hash += '$' + document.getElementById('syntax').value;
-                }
-                document.getElementById('form').submit();
-            }
-
-            document.onpaste = function (event) {
-                var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
-                var blob = null;
-                for (var i = 0; i < items.length; i++) {
-                    if (items[i].type.indexOf("image/") === 0) {
-                        blob = items[i].getAsFile();
-                    }
-                }
-                if (blob !== null) {
-                        var e = {'target': {'files': [blob]}};
-                        load_image(e);
-                }
-            }
-
-            var seeded = function () {
-                sjcl.random.removeEventListener('seeded', seeded);
-                document.getElementById('encrypt-top').disabled = false;
-                document.getElementById('encrypt-bottom').disabled = false;
-                document.getElementById('seal-top').disabled = false;
-                document.getElementById('seal-bottom').disabled = false;
-            }
-
-            if (sjcl.random.isReady()) {
-                seeded();
-            } else {
-                sjcl.random.addEventListener('seeded', seeded);
-                sjcl.random.startCollectors();
-            }
-
-            plaintext.style.height = (window.innerHeight - 130) + 'px';
-            plaintext.value = '';
-            loader.value = '';
-            canvas_width = plaintext.offsetWidth;
-            canvas_height = plaintext.offsetHeight;
-            history.pushState("", document.title, window.location.pathname + window.location.search);            
+    <script src="{{ url_for('static', filename='sjcl.js') }}">
+    </script> 
+    <script src="{{ url_for('static', filename='author.js') }}">
     </script>
 </body>
 </html>

@@ -13,7 +13,7 @@ be shortened below 16.
 
 # Running on NixOS
 
-Here's an example `httpd` config for NixOS:
+Here's an example `httpd` config for NixOS. The `.nix` files you need are in `contrib/nix`.
 
     imports = [
         ./service.nix
