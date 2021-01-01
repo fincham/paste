@@ -1,5 +1,7 @@
 # paste
 
+'''This release has a known bug with image scaling. This will be fixed in the next release.'''
+
 A basic encrypted pastebin.
 
 Expects these environment variables to be set:
