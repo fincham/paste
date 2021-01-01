@@ -1,0 +1,18 @@
+[Unit]
+Description=Encrypted pastebin server
+Documentation=https://github.com/fincham/paste
+
+[Service]
+WorkingDirectory=/opt/hotplate/app/paste
+Environment="PASTE_ID_LENGTH=10"
+Environment="PASTE_KEY_LENGTH=16"
+Environment="PASTE_PATH=/srv/www/paste"
+ExecStart=/opt/hotplate/app/paste/venv/bin/waitress-serve --listen=127.0.0.1:4000 paste:app
+Group=paste
+User=paste
+StandardError=syslog
+StandardOutput=syslog
+SyslogIdentifier=paste
+
+[Install]
+WantedBy=network-online.target
